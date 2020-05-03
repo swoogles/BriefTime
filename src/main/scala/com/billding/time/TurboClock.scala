@@ -14,9 +14,15 @@ object TurboClock {
 
   class TurboClock(rawInstant: String) extends SchedulerLive with Clock {
 
-    val startingInstant =
+    val startingInstant: ZonedDateTime =
     ZonedDateTime
       .parse(rawInstant)
+
+    val startingTimeInMillis = startingInstant.toEpochSecond * 1000
+
+    val initializationInstantInMillis = System.currentTimeMillis()
+
+    val initialOffSet: Long =  initializationInstantInMillis - startingTimeInMillis
 
     val clock: Service[Any] = new Service[Any] {
 
@@ -26,7 +32,12 @@ object TurboClock {
 
 //          System.currentTimeMillis
 //            .map(l => unit.convert(l, TimeUnit.MILLISECONDS))
-          System.currentTimeMillis + ((System.currentTimeMillis - startingInstant.toEpochSecond * 1000 ) * 60)
+          val currentOffset =
+          (System.currentTimeMillis - startingTimeInMillis)
+            val exageratedOffset = (currentOffset - initialOffSet) * 60
+          startingTimeInMillis + exageratedOffset
+
+//          + ( * 60)
 //            Instant.parse("2020-02-20T18:20:00.00Z").atZone(ZoneId.of("America/Denver")).toEpochSecond * 1000
     }
           .map(l => unit.convert(l, TimeUnit.MILLISECONDS))
