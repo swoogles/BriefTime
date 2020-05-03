@@ -1,4 +1,4 @@
-package crestedbutte.time
+package com.billding.time
 
 import java.time.format.{DateTimeFormatter, DateTimeParseException}
 import java.time.temporal.ChronoUnit
@@ -7,6 +7,19 @@ import java.time.{Duration, LocalTime}
 import scala.util.Try
 
 class BusTime(localTime: LocalTime) {
+  def isBefore(busTime: BusTime) =
+    truncatedToMinutes.isBefore(busTime.truncatedToMinutes)
+
+  def isAfter(busTime: BusTime) =
+    truncatedToMinutes.isAfter(busTime.truncatedToMinutes)
+
+  def isBeforeOrEqualTo(busTime: BusTime) =
+    truncatedToMinutes.isBefore(busTime.truncatedToMinutes) ||
+      truncatedToMinutes.equals(busTime.truncatedToMinutes)
+
+  def isAfterOrEqualTo(busTime: BusTime) =
+    truncatedToMinutes.isAfter(busTime.truncatedToMinutes) ||
+      truncatedToMinutes.equals(busTime.truncatedToMinutes)
 
   private val truncatedToMinutes =
     localTime.truncatedTo(ChronoUnit.MINUTES)

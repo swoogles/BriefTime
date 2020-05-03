@@ -1,4 +1,4 @@
-package crestedbutte.time
+package com.billding.time
 
 import java.time.Duration
 

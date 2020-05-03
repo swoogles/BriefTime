@@ -1,4 +1,4 @@
-package crestedbutte
+package com.billding.time
 
 import java.time.{Instant, OffsetDateTime, ZoneId, ZonedDateTime}
 import java.util.concurrent.TimeUnit
