@@ -45,10 +45,13 @@ class BusTime(localTime: LocalTime) {
   override val toString: String = localTime.format(dateFormat)
 
   private val dumbAmericanDateFormat =
-    DateTimeFormatter.ofPattern("hh:mm")
+    DateTimeFormatter.ofPattern("h:mm a") // TODO Fuck! Why aren't you showing AM/PM???
 
-  val toDumbAmericanString: String =
-    localTime.format(dumbAmericanDateFormat)
+    val AM_OR_PM_STRING: String =
+  if (localTime.isBefore(LocalTime.parse("12:00"))) "AM" else "PM"
+
+    val toDumbAmericanString: String =
+  localTime.format(dumbAmericanDateFormat) + AM_OR_PM_STRING
 
   val isLikelyEarlyMorningRatherThanLateNight: Boolean =
     localTime.isAfter(LocalTime.parse("04:00:00"))
