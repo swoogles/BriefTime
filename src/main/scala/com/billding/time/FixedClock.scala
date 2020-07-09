@@ -6,15 +6,14 @@ import java.util.concurrent.TimeUnit
 import zio.clock.Clock
 import zio.clock.Clock.Service
 import zio.duration.Duration
-import zio.scheduler.SchedulerLive
-import zio.{IO, UIO, ZIO}
+import zio.{IO, Schedule, UIO, ZIO}
 
 // TODO Add ability to create new Fixed clocks with a time parameter.
 object FixedClock {
 
-  class Fixed(rawInstant: String) extends SchedulerLive with Clock {
+    def Fixed(rawInstant: String): Clock.Service = {
 
-    val clock: Service[Any] = new Service[Any] {
+      val clock: Clock.Service = new Clock.Service {
 
       def currentTime(unit: TimeUnit): UIO[Long] =
         IO.effectTotal(
@@ -30,15 +29,11 @@ object FixedClock {
 //      def sleep(duration: Duration): UIO[Unit] =
 //        UIO.unit
       def sleep(duration: Duration): UIO[Unit] =
-        scheduler.scheduler.flatMap(
-          scheduler =>
             ZIO.effectAsyncInterrupt[Any, Nothing, Unit] { k =>
-              val canceler = scheduler
-                .schedule(() => k(ZIO.unit), duration)
+              val canceler = Schedule.duration(duration)
 
-              Left(ZIO.effectTotal(canceler()))
-            },
-        )
+              Left(ZIO.effectTotal(canceler))
+            }
 
       def currentDateTime: ZIO[Any, Nothing, OffsetDateTime] =
         for {
@@ -48,5 +43,6 @@ object FixedClock {
                                          zone)
 
     }
+      clock
   }
 }

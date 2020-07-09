@@ -1,13 +1,13 @@
 //scalaVersion := "2.12.10"
 scalaVersion := "2.13.1"
-version := "0.0.6"
+version := "0.0.9"
 
 organization := "com.billding"
 
 enablePlugins(ScalaJSPlugin)
 
 libraryDependencies ++= Seq(
-  "dev.zio" %%% "zio" % "1.0.0-RC17",
+  "dev.zio" %%% "zio" % "1.0.0-RC18",
   "io.github.cquiroz" %%% "scala-java-time" % "2.0.0-RC5",
 )
 

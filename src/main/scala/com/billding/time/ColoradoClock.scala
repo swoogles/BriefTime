@@ -6,19 +6,18 @@ import java.util.concurrent.TimeUnit
 import zio.clock.Clock
 import zio.clock.Clock.Service
 import zio.duration.Duration
-import zio.scheduler.SchedulerLive
-import zio.{IO, UIO, ZIO}
+import zio.{Has, IO, Schedule, UIO, ZIO}
 
 object ColoradoClock {
 
-  trait Live extends SchedulerLive with Clock {
+  val Live: Clock.Service  = {
 
     val availableTimezones: String = {
       import collection.JavaConverters._
       ZoneId.getAvailableZoneIds.asScala.mkString(" :: ")
     }
 
-    val clock: Service[Any] = new Service[Any] {
+      val clock: Clock.Service = new Clock.Service {
 
       def currentTime(unit: TimeUnit): UIO[Long] =
         IO.effectTotal(System.currentTimeMillis)
@@ -29,15 +28,11 @@ object ColoradoClock {
 //      def sleep(duration: Duration): UIO[Unit] =
 //        UIO.unit
       def sleep(duration: Duration): UIO[Unit] =
-        scheduler.scheduler.flatMap(
-          scheduler =>
             ZIO.effectAsyncInterrupt[Any, Nothing, Unit] { k =>
-              val canceler = scheduler
-                .schedule(() => k(ZIO.unit), duration)
+              val canceler = Schedule.duration(duration)
 
-              Left(ZIO.effectTotal(canceler()))
-            },
-        )
+              Left(ZIO.effectTotal(canceler))
+            }
 
       def currentDateTime: ZIO[Any, Nothing, OffsetDateTime] =
         for {
@@ -54,6 +49,6 @@ object ColoradoClock {
                                          zone)
 
     }
+    clock
   }
-  object Live extends Live
 }
