@@ -1,6 +1,6 @@
 addSbtPlugin("org.jmotor.sbt" % "sbt-dependency-updates" % "1.2.2")
-addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.31")
-addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler-sjs06" % "0.17.0")
+addSbtPlugin("org.scala-js" % "sbt-scalajs" % "1.1.1")
+addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.18.0")
 addSbtPlugin("org.scalameta" % "sbt-scalafmt" % "2.3.2")
 addSbtPlugin("com.codecommit" % "sbt-github-packages" % "0.5.0")
 addSbtPlugin("au.com.onegeek" %% "sbt-dotenv" % "2.1.146")
