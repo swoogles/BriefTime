@@ -48,11 +48,8 @@ object TurboClock {
 //      def sleep(duration: Duration): UIO[Unit] =
 //        UIO.unit
       def sleep(duration: Duration): UIO[Unit] =
-            ZIO.effectAsyncInterrupt[Any, Nothing, Unit] { k =>
-              val canceler = Schedule.duration(duration)
+        Clock.Service.live.sleep(duration)
 
-              Left(ZIO.effectTotal(canceler))
-            }
 
       def currentDateTime: ZIO[Any, Nothing, OffsetDateTime] =
         for {
