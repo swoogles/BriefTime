@@ -1,6 +1,6 @@
 //scalaVersion := "2.12.10"
 scalaVersion := "2.13.1"
-version := "0.0.16"
+version := "0.0.17"
 
 organization := "com.billding"
 
@@ -13,3 +13,7 @@ libraryDependencies ++= Seq(
 
 githubOwner := "swoogles"
 githubRepository := "BriefTime"
+
+libraryDependencies += "com.lihaoyi" %%% "utest" % "0.7.5" % "test"
+
+testFrameworks += new TestFramework("utest.runner.Framework")

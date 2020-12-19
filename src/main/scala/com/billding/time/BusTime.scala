@@ -7,8 +7,28 @@ import java.time.{Duration, LocalTime}
 import scala.util.Try
 
 class BusTime(localTime: LocalTime) {
-  def isBefore(busTime: BusTime) =
+
+  def isBefore(busTime: BusTime) = {
+    if (
+      (this.isLikelyEarlyMorningRatherThanLateNight
+        && busTime.isLikelyEarlyMorningRatherThanLateNight)
+      || (
+        !this.isLikelyEarlyMorningRatherThanLateNight
+          && !busTime.isLikelyEarlyMorningRatherThanLateNight
+      )
+    ) {
+      truncatedToMinutes.isBefore(busTime.truncatedToMinutes)
+    } else {
+      if (this.isLikelyEarlyMorningRatherThanLateNight)
+        1
+      else
+        -1
+
+    }
+
+
     truncatedToMinutes.isBefore(busTime.truncatedToMinutes)
+  }
 
   def isAfter(busTime: BusTime) =
     truncatedToMinutes.isAfter(busTime.truncatedToMinutes)
@@ -102,4 +122,24 @@ object BusTime {
     goal.truncatedToMinutes
       .equals(now.truncatedToMinutes)
 
+  implicit val busTimeOrdering: Ordering[BusTime] =
+    (x: BusTime, y: BusTime) => {
+      if (
+        (x.isLikelyEarlyMorningRatherThanLateNight
+          && y.isLikelyEarlyMorningRatherThanLateNight)
+          || (
+          !x.isLikelyEarlyMorningRatherThanLateNight
+            && !y.isLikelyEarlyMorningRatherThanLateNight
+          )
+      ) {
+        x.truncatedToMinutes.compareTo(y.truncatedToMinutes)
+      } else {
+        if (x.isLikelyEarlyMorningRatherThanLateNight)
+          -1
+        else
+          1
+
+      }
+
+    }
 }
