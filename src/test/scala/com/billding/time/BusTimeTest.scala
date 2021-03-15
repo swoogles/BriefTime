@@ -27,6 +27,28 @@ object BusTimeTest extends TestSuite {
       assert(
         BusTime.busTimeOrdering.compare(BusTime("08:00"), BusTime("08:00")) == 0)
     }
+
+    test("right number of hours is produced in 24-hour format") {
+      assert(
+        BusTime("02:20").hours == 2)
+      assert(
+        BusTime("16:20").hours == 16)
+    }
+    test("right number of hours is produced in 12-hour format") {
+      assert( BusTime("00:20").hours12 == 12)
+      assert( BusTime("02:20").hours12 == 2)
+      assert( BusTime("12:20").hours12 == 12)
+      assert( BusTime("16:20").hours12 == 4)
+      assert( BusTime("20:20").hours12 == 8)
+      assert( BusTime("23:20").hours12 == 11)
+    }
+
+    test("right number of minutes is produced") {
+      assert(
+        BusTime("02:20").minutes == 20)
+      assert(
+        BusTime("02:59").minutes == 59)
+    }
   }
 
 }

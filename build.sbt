@@ -1,6 +1,6 @@
 //scalaVersion := "2.12.10"
 scalaVersion := "2.13.1"
-version := "0.0.17"
+version := "0.0.18"
 
 organization := "com.billding"
 

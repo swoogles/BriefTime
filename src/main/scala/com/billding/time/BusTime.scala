@@ -7,6 +7,12 @@ import java.time.{Duration, LocalTime}
 import scala.util.Try
 
 class BusTime(localTime: LocalTime) {
+  val hours: Int = localTime.getHour
+  val hours12: Int =
+    if( hours == 0 ||  hours == 12)
+      12
+    else (hours % 12)
+  val minutes: Int = localTime.getMinute
 
   def isBefore(busTime: BusTime) = {
     if (
